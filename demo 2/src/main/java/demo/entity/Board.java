@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -46,5 +47,19 @@ public class Board extends TimeBaseEntity {
         this.viewCount = viewCount;
         this.commentCount = commentCount;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "id=" + id +
+                ", language=" + language.getLanguageName() +
+                ", member.getId()=" + member.getName() +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", viewCount=" + viewCount +
+                ", commentCount=" + commentCount +
+                ", status=" + status +
+                '}';
     }
 }

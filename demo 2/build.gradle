@@ -48,7 +48,7 @@ dependencies {
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	// 쿼리 파라미터 바인딩된거 값 로그로 찍어주는 라이브러리
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+//	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
 }
 

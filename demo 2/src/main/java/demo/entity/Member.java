@@ -9,7 +9,6 @@ import lombok.ToString;
 @Table(name = "USERS")
 @NoArgsConstructor
 @Getter
-@ToString
 public class Member extends TimeBaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

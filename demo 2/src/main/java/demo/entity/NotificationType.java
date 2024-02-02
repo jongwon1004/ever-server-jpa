@@ -1,6 +1,5 @@
 package demo.entity;
 
-import demo.enums.EntityType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,17 +8,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "IMAGE")
-public class Image extends TimeBaseEntity {
+@Table(name = "NOTIFICATIONTYPE")
+public class NotificationType {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notificationTypeNo")
     private Long id;
 
-    @Enumerated(value = EnumType.STRING)
-    private EntityType entityType;
-
-    private Integer entityId;
-    private String serverFilename;
-    private String clientFilename;
+    private String notificationTypeName;
 
 }
