@@ -41,5 +41,9 @@ public class Comment extends TimeBaseEntity {
     @Enumerated(value = EnumType.STRING)
     private StatusType status;
 
+    @OneToMany(mappedBy = "comment")
+    private List<CommentImgMap> commentImgMaps = new ArrayList<>();
+
+
 
 }

@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "BOARD")
@@ -34,6 +37,9 @@ public class Board extends TimeBaseEntity {
 
     @Enumerated(value = EnumType.STRING)
     private StatusType status;
+
+    @OneToMany(mappedBy = "board")
+    private List<BoardImgMap> boardImgMaps = new ArrayList<>();
 
     public Board(Language language, Member member, String title, String content) {
         this(language, member, title, content, 0, 0, StatusType.ACTIVE);

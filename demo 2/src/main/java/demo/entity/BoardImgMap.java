@@ -24,12 +24,12 @@ public class BoardImgMap {
      * 복합 키를 사용하는 엔티티에서 식별자를 매핑할때 사용
      */
     @MapsId("globalBoardNo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "globalBoardNo")
     private Board board;
 
     @MapsId("imageNo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imageNo")
     private Image image;
 }
