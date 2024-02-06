@@ -1,6 +1,7 @@
 package demo.entity;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import demo.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static demo.entity.QBoard.*;
 import static demo.entity.QMember.*;
@@ -26,6 +28,9 @@ class BoardTest {
 
     @Autowired
     EntityManager em;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     public void boardTest() {
@@ -53,5 +58,22 @@ class BoardTest {
         System.out.println("findBoard = " + findBoard);
 
     }
+
+    @Test
+    public void test() {
+        Optional<Member> findMember = memberRepository.findById(2L);
+        System.out.println("findMember.orElseThrow(() -> new IllegalStateException(\"Not Member\"))\n                .getName() = " + findMember.orElseThrow(() -> new IllegalStateException("Not Member"))
+                .getName());
+    }
+
+    @Test
+    public void test2() {
+        List<Member> w = memberRepository.findByNameStartingWith("ch");
+        for (Member member : w) {
+            System.out.println("member = " + member.getName());
+        }
+    }
+
+
 
 }

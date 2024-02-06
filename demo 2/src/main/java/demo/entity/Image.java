@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,6 +20,9 @@ public class Image extends TimeBaseEntity {
 
     @Enumerated(value = EnumType.STRING)
     private EntityType entityType;
+
+    @OneToMany(mappedBy = "image")
+    private List<BoardImgMap> boardImgMaps = new ArrayList<>();
 
     private Integer entityId;
     private String serverFilename;

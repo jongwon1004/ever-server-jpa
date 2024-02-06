@@ -25,7 +25,6 @@ public class MemberStatusDto {
     private String profileImage;
 
     @QueryProjection
-
     public MemberStatusDto(Long id, String name) {
         this.id = id;
         this.name = name;
