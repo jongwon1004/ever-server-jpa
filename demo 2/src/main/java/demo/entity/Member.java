@@ -46,7 +46,21 @@ public class Member extends TimeBaseEntity {
         this.userClass = userClass;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", studentNumber='" + studentNumber + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userClass=" + userClass.getClassName() +
+                ", interest='" + interest + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", exp=" + exp +
+                ", profileImage='" + profileImage + '\'' +
+                '}';
+    }
 }

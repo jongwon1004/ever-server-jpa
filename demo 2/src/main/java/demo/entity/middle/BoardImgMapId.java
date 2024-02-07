@@ -15,9 +15,9 @@ import java.io.Serializable;
  * @EmbeddableId 를 적용한 식별자 클래스는 다음의 조건을 만족해야함.
  * 1. @Embeddable 적용
  * 2. Serializable 인터페이스 구현
- * equals, hashCode 구현 - 식별자로 사용하기 위함
- * 기본 생성자 필수
- * 클래스 접근 제어자 범위 public
+ * 3. equals, hashCode 구현 - 식별자로 사용하기 위함
+ * 4. 기본 생성자 필수
+ * 5. 클래스 접근 제어자 범위 public
  */
 @Embeddable
 @Getter
@@ -26,6 +26,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class BoardImgMapId implements Serializable {
 
-    private Integer globalBoardNo;
-    private Integer imageNo;
+    private Long globalBoardNo;
+    private Long imageNo;
 }

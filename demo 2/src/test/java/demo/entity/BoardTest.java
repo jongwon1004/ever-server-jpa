@@ -70,7 +70,7 @@ class BoardTest {
     public void test2() {
         List<Member> w = memberRepository.findByNameStartingWith("ch");
         for (Member member : w) {
-            System.out.println("member = " + member.getName());
+            System.out.println("member = " + member);
         }
     }
 
