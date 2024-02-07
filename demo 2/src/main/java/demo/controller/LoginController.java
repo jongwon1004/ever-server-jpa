@@ -3,6 +3,8 @@ package demo.controller;
 import demo.entity.Member;
 import demo.repository.MemberRepository;
 import demo.request.LoginRequest;
+import demo.response.LoginResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +19,19 @@ public class LoginController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@ModelAttribute LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@ModelAttribute LoginRequest loginRequest, HttpSession session) {
         log.info("요청 들어옴");
 
         Member member = memberRepository.loginRequestCheck(loginRequest);
         if (member == null) {
-            return ResponseEntity.badRequest().body("아이디 또는 비밀번호가 맞지않습니다");
-        } else return ResponseEntity.ok("로그인에 성공하였습니다");
+            session.setAttribute("LOGINID", loginRequest.getUserId());
+            return ResponseEntity.badRequest().body(new LoginResponse("loginFailed", false));
+        } else return ResponseEntity.ok(new LoginResponse("loginSuccess", true));
 
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
+    @GetMapping
+    public ResponseEntity<String> sessionCheck(HttpSession session) {
+        return ResponseEntity.ok((String) session.getAttribute("LOGINID"));
     }
 }

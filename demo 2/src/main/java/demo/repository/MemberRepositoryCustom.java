@@ -10,4 +10,5 @@ public interface MemberRepositoryCustom {
     List<Member> findByNameStartingWith(String startName);
 
     Member loginRequestCheck(LoginRequest loginRequest);
+
 }
