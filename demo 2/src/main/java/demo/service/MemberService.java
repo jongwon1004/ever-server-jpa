@@ -65,12 +65,28 @@ public class MemberService implements UserDetailsService {
         }
 
         if (duplicateCheck("loginId", signupRequest.getLoginId())) {
-
+            validationErrors.add("ログインIDが重複しています");
         }
+
+        if (duplicateCheck("studentNumber", signupRequest.getStudentNumber())) {
+            validationErrors.add("学生番号が重複しています");
+        }
+
+        if (duplicateCheck("email", signupRequest.getEmail())) {
+            validationErrors.add("メールアドレスが重複しています");
+        }
+
+        System.out.println("validationErrors = " + validationErrors);
+
+        // 검사 결과 에러가 있을 경우, 사용자 정의 예외 발생
+        if (!validationErrors.isEmpty()) {
+            throw new MemberSignupException(validationErrors);
+        }
+
 
     }
 
     private Boolean duplicateCheck(String field, String value) {
-        memberRepository.signupDuplicateCheck(field, value);
+        return memberRepository.signupDuplicateCheck(field, value);
     }
 }

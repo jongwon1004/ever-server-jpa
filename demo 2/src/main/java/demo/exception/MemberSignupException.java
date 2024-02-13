@@ -8,7 +8,7 @@ public class MemberSignupException extends RuntimeException {
 
     public MemberSignupException(List<String> errorMessages) {
         super("signup errors");
-        this.errorMessages = getErrorMessages();
+        this.errorMessages = errorMessages;
     }
 
     public List<String> getErrorMessages() {

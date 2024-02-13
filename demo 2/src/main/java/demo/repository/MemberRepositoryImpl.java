@@ -2,6 +2,7 @@ package demo.repository;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import demo.dto.MemberStatusDto;
 import demo.entity.Member;
@@ -86,9 +87,29 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     @Override
     public Boolean signupDuplicateCheck(String field, String value) {
 
-        // 로그인 아이디 중복 로직
-        queryFactory
+        BooleanExpression predicate = null;
+
+        switch (field) {
+            case "loginId":
+                predicate = member.loginId.eq(value);
+                break;
+            case "studentNumber":
+                predicate = member.studentNumber.eq(value);
+                break;
+            case "nickname":
+                predicate = member.nickname.eq(value);
+                break;
+            case "email":
+                predicate = member.email.eq(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field: " + field);
+        }
+
+        return queryFactory
                 .selectFrom(member)
-                .where()
+                .where(predicate) // 해당 필드의 값이 존재 ?
+                .fetchFirst() != null;  // 존재하지 않으면 false
     }
+
 }
