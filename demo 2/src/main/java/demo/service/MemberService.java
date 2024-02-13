@@ -26,6 +26,9 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }
 
+    /**
+     * TODO: 현재 테스트로 userClassRepository.save 쪽 class 이름 새로 저장하니까 고쳐야됨
+     */
     public Long save(SignupRequest signupRequest) {
 
         UserClass userClass = userClassRepository.findUserClassByClassName(signupRequest.getClassName())

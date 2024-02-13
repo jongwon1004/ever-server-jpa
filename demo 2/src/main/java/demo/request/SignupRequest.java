@@ -7,6 +7,19 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
+/*
+    {
+        "name" : "崔 鐘元",
+        "studentNumber" : "2220019",
+        "loginId" : "whddnjs3340",
+        "nickname" : "johnny",
+        "email" : "whddnjs3340@naver.com",
+        "password" : "dnflwlq1408",
+        "confirmPassword" : "dnflwlq1408",
+        "className" : "SK2A"
+    }
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

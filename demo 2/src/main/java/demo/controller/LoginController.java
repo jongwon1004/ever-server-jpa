@@ -21,6 +21,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@ModelAttribute LoginRequest loginRequest, HttpSession session) {
         log.info("요청 들어옴");
+        log.info("LoginRequest ={}", loginRequest);
 
         Member member = memberRepository.loginRequestCheck(loginRequest);
         if (member == null) {
