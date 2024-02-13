@@ -1,6 +1,9 @@
 package demo.repository;
 
+import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import demo.dto.MemberStatusDto;
 import demo.entity.Member;
 import demo.request.LoginRequest;
 import jakarta.persistence.EntityManager;
@@ -39,10 +42,44 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 )
                 .fetchOne();
 
-        if (findMember == null || bCryptPasswordEncoder.matches(loginRequest.getUserPass(), findMember.getPassword())) {
+        System.out.println("findMember = " + findMember);
+
+        if (findMember == null || !bCryptPasswordEncoder.matches(loginRequest.getUserPass(), findMember.getPassword())) {
             return null;
         }
 
         return findMember;
+    }
+
+    @Override
+    public String findIdByLoginId(String loginId) {
+
+        return String.valueOf(
+                queryFactory
+                        .selectFrom(member)
+                        .where(member.loginId.eq(loginId))
+                        .fetchOne()
+                        .getId());
+    }
+
+    @Override
+    public MemberStatusDto userStatus(Long userId) {
+        return
+                queryFactory
+                        .select(
+                                Projections.fields(MemberStatusDto.class,
+                                        member.id,
+                                        member.name,
+                                        member.studentNumber,
+                                        member.loginId,
+                                        member.nickname,
+                                        member.email,
+                                        member.userClass.className,
+                                        member.interest,
+                                        member.profileImage,
+                                        member.introduction)
+                        ).from(member)
+                        .where(member.id.eq(userId))
+                        .fetchOne();
     }
 }

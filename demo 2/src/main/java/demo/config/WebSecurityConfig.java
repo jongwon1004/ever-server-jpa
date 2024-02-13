@@ -34,7 +34,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { // 특정 HTTP 요청에 대해 웹 기반 보안 구성. 인증/인가 및 로그인, 로그아웃 설정
         return http
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/api/login", "/api/signup", "/api/user").permitAll() // 누구나 접근 가능. requestMatchers() 에 기재된 url 은 인증, 인가 없어도 접근이 가능함
+                        .requestMatchers("/api/login", "/api/signup", "/api/user", "/api/status").permitAll() // 누구나 접근 가능. requestMatchers() 에 기재된 url 은 인증, 인가 없어도 접근이 가능함
                         .anyRequest().authenticated() // anyRequest() : 해당 코드 윗줄에서 설정한 url 이외의 요청에 대해 설정, authenticated() : 인가는 필요하지 않지만 인증이 필요함
                 )
                 .formLogin(form -> form

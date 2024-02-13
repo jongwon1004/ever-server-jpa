@@ -17,16 +17,10 @@ public class MemberStatusDto {
     private String loginId;
     private String nickname;
     private String email;
-    private String password;
-    private Integer classNo;
+    private String className;
     private String interest;
     private String introduction;
     private int exp;
     private String profileImage;
 
-    @QueryProjection
-    public MemberStatusDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
