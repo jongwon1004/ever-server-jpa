@@ -9,4 +9,8 @@ import java.util.Optional;
 public interface UserClassRepository extends JpaRepository<UserClass, Long> {
 
     Optional<UserClass> findUserClassByClassName(String className);
+
+    Boolean existsByClassName(String className);
+
+
 }

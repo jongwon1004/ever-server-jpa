@@ -2,6 +2,7 @@ package demo.controller;
 
 import demo.request.SignupRequest;
 import demo.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequest signupRequest) {
+    public String signup(@Valid @RequestBody SignupRequest signupRequest) {
+
+        memberService.validateUser(signupRequest);
         memberService.save(signupRequest);
         return "success";
     }

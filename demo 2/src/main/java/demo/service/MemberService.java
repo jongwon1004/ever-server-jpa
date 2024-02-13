@@ -2,6 +2,7 @@ package demo.service;
 
 import demo.entity.Member;
 import demo.entity.UserClass;
+import demo.exception.MemberSignupException;
 import demo.repository.MemberRepository;
 import demo.repository.UserClassRepository;
 import demo.request.SignupRequest;
@@ -10,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +51,26 @@ public class MemberService implements UserDetailsService {
                 .build());
 
         return member.getId();
+    }
+
+    public void validateUser(SignupRequest signupRequest) throws MemberSignupException {
+        List<String> validationErrors = new ArrayList<>();
+
+        if (!userClassRepository.existsByClassName(signupRequest.getClassName())) {
+            validationErrors.add("有効なクラスではありません");
+        }
+
+        if (signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
+            validationErrors.add("確認用パスワードが一致してません");
+        }
+
+        if (duplicateCheck("loginId", signupRequest.getLoginId())) {
+
+        }
+
+    }
+
+    private Boolean duplicateCheck(String field, String value) {
+        memberRepository.signupDuplicateCheck(field, value);
     }
 }

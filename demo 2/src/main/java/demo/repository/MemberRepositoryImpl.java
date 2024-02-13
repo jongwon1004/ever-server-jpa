@@ -82,4 +82,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         .where(member.id.eq(userId))
                         .fetchOne();
     }
+
+    @Override
+    public Boolean signupDuplicateCheck(String field, String value) {
+
+        // 로그인 아이디 중복 로직
+        queryFactory
+                .selectFrom(member)
+                .where()
+    }
 }

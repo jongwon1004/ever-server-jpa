@@ -16,4 +16,6 @@ public interface MemberRepositoryCustom {
 
     MemberStatusDto userStatus(Long userId);
 
+    Boolean signupDuplicateCheck(String field, String value);
+
 }
