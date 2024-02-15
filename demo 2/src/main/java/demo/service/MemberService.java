@@ -95,4 +95,8 @@ public class MemberService implements UserDetailsService {
     private Boolean duplicateCheck(String field, String value) {
         return memberRepository.signupDuplicateCheck(field, value);
     }
+
+    public Boolean duplicateCheckPub(String field, String value) {
+        return memberRepository.signupDuplicateCheck(field, value);
+    }
 }
