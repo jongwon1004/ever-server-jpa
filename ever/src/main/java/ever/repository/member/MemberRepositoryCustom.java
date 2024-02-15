@@ -1,4 +1,4 @@
-package ever.repository;
+package ever.repository.member;
 
 import ever.dto.MemberStatusDto;
 import ever.entity.Member;

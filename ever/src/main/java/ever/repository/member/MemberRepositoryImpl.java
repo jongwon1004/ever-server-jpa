@@ -1,10 +1,11 @@
-package ever.repository;
+package ever.repository.member;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ever.dto.MemberStatusDto;
 import ever.entity.Member;
+import ever.repository.member.MemberRepositoryCustom;
 import ever.request.LoginRequest;
 import ever.entity.QMember;
 import jakarta.persistence.EntityManager;

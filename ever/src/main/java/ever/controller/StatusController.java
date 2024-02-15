@@ -1,6 +1,6 @@
 package ever.controller;
 
-import ever.repository.MemberRepository;
+import ever.repository.member.MemberRepository;
 import ever.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
 package ever.controller;
 
 import ever.exception.MailSendException;
+import ever.request.EmailAuthCheckRequest;
 import ever.request.EmailAuthRequest;
 import ever.service.EmailAuthService;
 import ever.service.MemberService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +32,10 @@ public class EmailAuthController {
     @PostMapping("/emailAuthRequest")
     public ResponseEntity<Object> emailAuthRequest(@RequestBody EmailAuthRequest emailAuthRequest) {
         log.info("EmailAuthRequest={}", emailAuthRequest);
+
+        // クライアントが再度認証ボタンをクリックした時既に送られた認証番号（DBに入っている）は削除
+        emailAuthService.removePreviousCertNumber(emailAuthRequest.getEmail());
+
         if (memberService.duplicateCheckPub("email", emailAuthRequest.getEmail())) { // 重複==true
             return ResponseEntity.status(HttpServletResponse.SC_CONFLICT)
                     .body(Collections.singletonMap("errorEmailMessage", "メールアドレスが重複しています"));
@@ -44,7 +50,15 @@ public class EmailAuthController {
 
         return ResponseEntity.ok().build();
     }
-//
-//    @PostMapping("/mailAuthCheck")
-//    public ResponseEntity mail
+
+    @PostMapping("/mailAuthCheck")
+    public ResponseEntity<?> certificationNumberCheck(@RequestBody EmailAuthCheckRequest emailAuthCheckRequest) {
+
+        Map<String, String> response = emailAuthService.certNumberCheck(emailAuthCheckRequest);
+        if (response != null) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        return ResponseEntity.ok(Collections.singletonMap("result", "mailAuthCheckSuccess"));
+    }
 }

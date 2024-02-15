@@ -9,4 +9,5 @@ public class EmailAuthCheckRequest {
 
     private String email;
     private String certificationNumber;
+
 }

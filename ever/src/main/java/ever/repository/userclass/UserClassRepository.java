@@ -1,4 +1,4 @@
-package ever.repository;
+package ever.repository.userclass;
 
 
 import ever.entity.UserClass;

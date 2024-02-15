@@ -1,7 +1,7 @@
 package ever.controller;
 
 import ever.entity.Member;
-import ever.repository.MemberRepository;
+import ever.repository.member.MemberRepository;
 import ever.request.LoginRequest;
 import ever.response.LoginResponse;
 import ever.session.SessionManager;

@@ -1,7 +1,7 @@
 package ever.repository;
 
 import ever.dto.MemberStatusDto;
-import ever.repository.MemberRepository;
+import ever.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

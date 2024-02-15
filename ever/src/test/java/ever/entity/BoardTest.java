@@ -1,11 +1,7 @@
 package ever.entity;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import ever.entity.Board;
-import ever.entity.Language;
-import ever.entity.LanguageType;
-import ever.entity.Member;
-import ever.repository.MemberRepository;
+import ever.repository.member.MemberRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

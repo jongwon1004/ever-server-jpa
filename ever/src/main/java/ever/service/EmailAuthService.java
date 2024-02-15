@@ -4,7 +4,8 @@ import ever.exception.MailSendException;
 import ever.email.EmailContent;
 import ever.entity.EmailAuth;
 import ever.enums.StatusType;
-import ever.repository.EmailAuthRepository;
+import ever.repository.email.EmailAuthRepository;
+import ever.request.EmailAuthCheckRequest;
 import ever.request.EmailAuthRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,11 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -29,14 +33,14 @@ public class EmailAuthService {
      * @param emailAuthRequest Email値しか入ってない
      */
     public void sendEmailAuthCode(EmailAuthRequest emailAuthRequest) throws MailSendException {
-        EmailAuth emailAuth = createCertificationNumber(emailAuthRequest); // DB登録
+        EmailAuth emailAuth = createCertNumber(emailAuthRequest); // DB登録
         sendEmailFinal(emailAuth.getEmail(), emailAuth.getCertificationNumber()); // メール送信
     }
 
     /**
      * DBに登録するメソッド
      */
-    private EmailAuth createCertificationNumber(EmailAuthRequest emailAuthRequest) {
+    private EmailAuth createCertNumber(EmailAuthRequest emailAuthRequest) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime nowPlusTenMin = now.plusMinutes(10);
         String certificationNumber = UUID.randomUUID()
@@ -74,4 +78,23 @@ public class EmailAuthService {
         }
     }
 
+    public Map<String, String> certNumberCheck(EmailAuthCheckRequest emailAuthCheckRequest) {
+
+        Map<String, String> response = null;
+
+        String dbCertNumber = emailAuthRepository.findCertNumberByEmail(emailAuthCheckRequest.getEmail());
+
+        // 認証番号が間違った時
+        if(!emailAuthCheckRequest.getCertificationNumber().equals(dbCertNumber)) {
+            response = new HashMap<>();
+            response.put("certNumMismatch", "認証番号が間違っています");
+        }
+
+        return response;
+    }
+
+    @Transactional
+    public void removePreviousCertNumber(String email) {
+        emailAuthRepository.deleteEmailAuthByEmail(email);
+    }
 }
