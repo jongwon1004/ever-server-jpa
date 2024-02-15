@@ -18,6 +18,19 @@ import java.time.LocalDateTime;
         "confirmPassword" : "dnflwlq1408",
         "className" : "SK2A"
     }
+
+    {
+        "name" : "CHOIJONGWON",
+        "studentNumber" : "2220020",
+        "loginId" : "hollywon1004",
+        "nickname" : "johnny1004",
+        "email" : "jongwon3340@gmail.com",
+        "password" : "dnflwlq1408",
+        "confirmPassword" : "dnflwlq1408",
+        "className" : "SK3A"
+    }
+
+
  */
 
 @Getter

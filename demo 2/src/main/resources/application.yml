@@ -5,6 +5,18 @@ spring:
     url: jdbc:mysql://localhost:3306/ever_jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  cloud:
+    gcp:
+      storage:
+        enabled: true
+        bucket: teamever-bucket
+      credentials:
+        location: /home/ubuntu/teamever-bucket-069b870a70a3.json
+        # ${GOOGLE_APPLICATION_CREDENTIALS}
+        # /Users/choijongwon/googleCloudStoragekey/teamever-bucket-069b870a70a3.json
+      # cmd + ,  -> Tools ->  Terminal -> Environment Variables -> + 클릭 -> name : GOOGLE_APPLICATION_CREDENTIALS
+      # value : json 키 경로
+
 
   jpa:
     #    open-in-view: false // OSIV 세션

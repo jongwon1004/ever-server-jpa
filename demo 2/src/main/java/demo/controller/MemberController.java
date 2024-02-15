@@ -1,6 +1,7 @@
 package demo.controller;
 
 import demo.exception.MemberSignupException;
+import demo.exception.UserClassNotFoundException;
 import demo.request.SignupRequest;
 import demo.service.MemberService;
 import jakarta.validation.Valid;
@@ -26,9 +27,10 @@ public class MemberController {
         try {
             memberService.validateUser(signupRequest);
             memberService.save(signupRequest);
-        } catch (MemberSignupException e) {
-            return ResponseEntity.badRequest().body(e.getErrorMessages());
+        } catch (MemberSignupException memberSignupException) {
+            return ResponseEntity.badRequest().body(memberSignupException.getErrorMessages());
         }
+
         return ResponseEntity.ok("success");
     }
 }

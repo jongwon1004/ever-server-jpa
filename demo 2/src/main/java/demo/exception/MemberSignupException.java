@@ -1,17 +1,18 @@
 package demo.exception;
 
 import java.util.List;
+import java.util.Map;
 
 public class MemberSignupException extends RuntimeException {
 
-    private final List<String> errorMessages;
+    private final Map<String, String> errorMessages;
 
-    public MemberSignupException(List<String> errorMessages) {
+    public MemberSignupException(Map<String, String> errorMessages) {
         super("signup errors");
         this.errorMessages = errorMessages;
     }
 
-    public List<String> getErrorMessages() {
+    public Map<String, String> getErrorMessages() {
         return errorMessages;
     }
 }

@@ -7,17 +7,22 @@ import demo.repository.MemberRepository;
 import demo.repository.UserClassRepository;
 import demo.request.SignupRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService implements UserDetailsService {
+
+    @Value("${spring.cloud.gcp.storage.bucket}")
+    private String bucketName;
 
     private final UserClassRepository userClassRepository;
     private final MemberRepository memberRepository;
@@ -30,13 +35,10 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }
 
-    /**
-     * TODO: 현재 테스트로 userClassRepository.save 쪽 class 이름 새로 저장하니까 고쳐야됨
-     */
     public Long save(SignupRequest signupRequest) {
 
         UserClass userClass = userClassRepository.findUserClassByClassName(signupRequest.getClassName())
-                .orElseGet(() -> userClassRepository.save(new UserClass(signupRequest.getClassName())));
+                .get(); // memberService.validateUser でクラス名の入力チェックをしたので、ここではただget()で持ってくるだけ
 
         Member member = memberRepository.save(Member.builder()
                 .name(signupRequest.getName())
@@ -47,36 +49,40 @@ public class MemberService implements UserDetailsService {
                 .password(bCryptPasswordEncoder.encode(signupRequest.getPassword()))
                 .userClass(userClass)
                 .interest(signupRequest.getInterest())
-                .profileImage("GCP_IMAGE_LINK")
+                .profileImage("https://storage.googleapis.com/" + bucketName + "/animal" + (new Random().nextInt(9) + 1) + ".png")
                 .build());
 
         return member.getId();
     }
 
     public void validateUser(SignupRequest signupRequest) throws MemberSignupException {
-        List<String> validationErrors = new ArrayList<>();
+        log.info("SignupRequest ={}", signupRequest);
+
+        Map<String, String> validationErrors = new HashMap<>();
 
         if (!userClassRepository.existsByClassName(signupRequest.getClassName())) {
-            validationErrors.add("有効なクラスではありません");
+            validationErrors.put("errorClassMessage", "有効なクラスではありません");
         }
 
-        if (signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
-            validationErrors.add("確認用パスワードが一致してません");
+        if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
+            validationErrors.put("passwordMismatch", "確認用パスワードが一致してません");
         }
 
         if (duplicateCheck("loginId", signupRequest.getLoginId())) {
-            validationErrors.add("ログインIDが重複しています");
+            validationErrors.put("errorIdMessage","ログインIDが重複しています");
         }
 
         if (duplicateCheck("studentNumber", signupRequest.getStudentNumber())) {
-            validationErrors.add("学生番号が重複しています");
+            validationErrors.put("errorStudentNumberMessage","学生番号が重複しています");
         }
 
         if (duplicateCheck("email", signupRequest.getEmail())) {
-            validationErrors.add("メールアドレスが重複しています");
+            validationErrors.put("errorEmailMessage","メールアドレスが重複しています");
         }
 
-        System.out.println("validationErrors = " + validationErrors);
+        if (duplicateCheck("nickname", signupRequest.getNickname())) {
+            validationErrors.put("errorNicknameMessage", "ニックネームが重複しています");
+        }
 
         // 검사 결과 에러가 있을 경우, 사용자 정의 예외 발생
         if (!validationErrors.isEmpty()) {
