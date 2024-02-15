@@ -47,5 +47,5 @@ public class EmailAuthController {
     }
 
     @PostMapping("/mailAuthCheck")
-    public ResponseEntity
+    public ResponseEntity mail
 }
