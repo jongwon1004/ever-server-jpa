@@ -10,7 +10,6 @@ public class EmailContent {
     private String subject;
     private String text;
 
-    // 메일 본문 구성을 위한 메서드
     public static EmailContent createEmailContent(String certificationNumber) {
         EmailContent emailContent = new EmailContent();
         emailContent.setFrom("teamevergp@gmail.com");

@@ -26,7 +26,7 @@ public class EmailAuthController {
     private final EmailAuthService emailAuthService;
 
     /**
-     * @param emailAuthRequest　このコントローラーメソッドが呼ばれた時点ではemailの値しか入ってない
+     * @param emailAuthRequest 　このコントローラーメソッドが呼ばれた時点ではemailの値しか入ってない
      */
     @PostMapping("/emailAuthRequest")
     public ResponseEntity<Object> emailAuthRequest(@RequestBody EmailAuthRequest emailAuthRequest) {
@@ -43,7 +43,9 @@ public class EmailAuthController {
             return ResponseEntity.status(421).body(mailSendException.getErrorMessage());
         }
 
-
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/mailAuthCheck")
+    public ResponseEntity
 }

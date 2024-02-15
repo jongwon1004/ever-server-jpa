@@ -1,5 +1,5 @@
 
-
+*.yml
 
 # User-specific stuff
 .idea/**/workspace.xml

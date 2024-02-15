@@ -1,9 +1,7 @@
 package demo.controller;
 
 import demo.exception.MemberSignupException;
-import demo.exception.UserClassNotFoundException;
 import demo.request.SignupRequest;
-import demo.service.EmailAuthService;
 import demo.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-    private final EmailAuthService emailAuthService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
 
         try {
-
-
             memberService.validateUser(signupRequest);
             memberService.save(signupRequest);
         } catch (MemberSignupException memberSignupException) {
