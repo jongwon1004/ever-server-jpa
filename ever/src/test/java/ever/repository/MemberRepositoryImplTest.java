@@ -1,4 +1,4 @@
-package demo.repository;
+package ever.repository;
 
 import ever.dto.MemberStatusDto;
 import ever.repository.MemberRepository;

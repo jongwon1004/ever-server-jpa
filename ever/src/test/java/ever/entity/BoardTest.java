@@ -1,4 +1,4 @@
-package demo.entity;
+package ever.entity;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ever.entity.Board;
