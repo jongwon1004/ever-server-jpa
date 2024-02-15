@@ -45,7 +45,7 @@ public class EmailAuthController {
 
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/mailAuthCheck")
-    public ResponseEntity mail
+//
+//    @PostMapping("/mailAuthCheck")
+//    public ResponseEntity mail
 }
