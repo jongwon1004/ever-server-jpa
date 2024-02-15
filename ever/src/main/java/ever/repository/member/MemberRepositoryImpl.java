@@ -111,4 +111,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .fetchFirst() != null;  // 존재하지 않으면 false
     }
 
+
+
 }

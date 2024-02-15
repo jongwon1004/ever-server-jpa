@@ -2,7 +2,9 @@ package ever.service;
 
 import ever.entity.Member;
 import ever.entity.UserClass;
+import ever.enums.StatusType;
 import ever.exception.MemberSignupException;
+import ever.repository.email.EmailAuthRepository;
 import ever.repository.member.MemberRepository;
 import ever.repository.userclass.UserClassRepository;
 import ever.request.SignupRequest;
@@ -26,6 +28,8 @@ public class MemberService implements UserDetailsService {
 
     private final UserClassRepository userClassRepository;
     private final MemberRepository memberRepository;
+    private final EmailAuthRepository emailAuthRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
@@ -51,6 +55,10 @@ public class MemberService implements UserDetailsService {
                 .interest(signupRequest.getInterest())
                 .profileImage("https://storage.googleapis.com/" + bucketName + "/animal" + (new Random().nextInt(9) + 1) + ".png")
                 .build());
+
+        /**
+         * ここにEmailAuthの情報DBから完全に削除するロージック
+         */
 
         return member.getId();
     }
@@ -82,6 +90,15 @@ public class MemberService implements UserDetailsService {
 
         if (duplicateCheck("nickname", signupRequest.getNickname())) {
             validationErrors.put("errorNicknameMessage", "ニックネームが重複しています");
+        }
+
+        /**
+         * Status.Activeはメール認証をまだ行ってない状態、認証が終わるとDELETEDに変わる
+         * パラマータのEmail値でDBからEmailAuthを持ってきて、そのEmailAuthがnullかStatus.ACTIVEの場合は認証を行ってない状態
+         */
+        if (emailAuthRepository.isEmailAuthenticated(signupRequest.getEmail()) == null
+                || emailAuthRepository.isEmailAuthenticated(signupRequest.getEmail()).getStatusType() == StatusType.ACTIVE) {
+            validationErrors.put("errorEmailMessage", "メール認証を行ってください");
         }
 
         // 入力チェックじ、エラーがあればMemberSignupException発生

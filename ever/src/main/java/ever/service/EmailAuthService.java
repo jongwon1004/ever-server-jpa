@@ -90,6 +90,9 @@ public class EmailAuthService {
             response.put("certNumMismatch", "認証番号が間違っています");
         }
 
+        // 民商番号が正しいとStatusをDELETEDに変更 -> 会員登録が終わった時DBから完全に削除される
+        emailAuthRepository.updateEmailAuthStatus(emailAuthCheckRequest.getEmail());
+
         return response;
     }
 

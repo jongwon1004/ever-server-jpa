@@ -20,12 +20,16 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    /**
+     * TODO: memberService.save (入力チェックが終わって最終的にDBに登録する時、EmailAuthの情報はDBから完全に削除される（使い捨て用DBのため）
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
 
         try {
             memberService.validateUser(signupRequest);
-            memberService.save(signupRequest);
+            Long userId = memberService.save(signupRequest);
+            System.out.println("userId = " + userId);
         } catch (MemberSignupException memberSignupException) {
             return ResponseEntity.badRequest().body(memberSignupException.getErrorMessages());
         }
