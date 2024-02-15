@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 식별자 클래스
+ * 識別子クラス
  */
 @Entity
 @Getter
@@ -22,7 +22,7 @@ public class BoardImgMap {
 
     /**
      * MapsId ?
-     * 복합 키를 사용하는 엔티티에서 식별자를 매핑할때 사용
+     * 複合機を使うエンティティで、識別子をマッピングする時に使用
      */
     @MapsId("globalBoardNo")
     @ManyToOne(fetch = FetchType.LAZY)

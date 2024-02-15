@@ -2,9 +2,8 @@ package demo.entity;
 
 import demo.enums.StatusType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -18,14 +17,23 @@ public class EmailAuth {
     @Column(name = "emailAuthNo")
     private Long id;
 
+    private String email;
+
     @Column(length = 6)
     private String certificationNumber;
 
     private LocalDateTime regDate;
     private LocalDateTime expireDate;
 
-//    @Enumerated(value = EnumType.STRING)
-//    private StatusType statusType;
+    @Enumerated(value = EnumType.STRING)
+    private StatusType statusType;
 
-
+    @Builder
+    public EmailAuth(String email, String certificationNumber, LocalDateTime regDate, LocalDateTime expireDate, StatusType statusType) {
+        this.email = email;
+        this.certificationNumber = certificationNumber;
+        this.regDate = regDate;
+        this.expireDate = expireDate;
+        this.statusType = statusType;
+    }
 }

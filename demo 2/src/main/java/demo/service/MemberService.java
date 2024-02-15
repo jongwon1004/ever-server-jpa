@@ -5,6 +5,7 @@ import demo.entity.UserClass;
 import demo.exception.MemberSignupException;
 import demo.repository.MemberRepository;
 import demo.repository.UserClassRepository;
+import demo.request.EmailAuthRequest;
 import demo.request.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,7 @@ public class MemberService implements UserDetailsService {
             validationErrors.put("errorNicknameMessage", "ニックネームが重複しています");
         }
 
-        // 검사 결과 에러가 있을 경우, 사용자 정의 예외 발생
+        // 入力チェックじ、エラーがあればMemberSignupException発生
         if (!validationErrors.isEmpty()) {
             throw new MemberSignupException(validationErrors);
         }
@@ -96,7 +97,11 @@ public class MemberService implements UserDetailsService {
         return memberRepository.signupDuplicateCheck(field, value);
     }
 
+    /**
+     * EmailAuthControllerからEmail重複入力チェックをするため private->private
+     */
     public Boolean duplicateCheckPub(String field, String value) {
         return memberRepository.signupDuplicateCheck(field, value);
     }
+
 }

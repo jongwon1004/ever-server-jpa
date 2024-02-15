@@ -1,9 +1,8 @@
 package demo.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import demo.email.EmailContent;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -18,4 +17,19 @@ public class EmailAuthRequest {
     private LocalDateTime expireDate;
     private Boolean status;
 
+    public void setCertificationNumber(String certificationNumber) {
+        this.certificationNumber = certificationNumber;
+    }
+
+    public void setRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
+
+    public void setExpireDate(LocalDateTime expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }

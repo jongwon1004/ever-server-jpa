@@ -1,10 +1,13 @@
 package demo.controller;
 
+import demo.exception.MailSendException;
 import demo.request.EmailAuthRequest;
+import demo.service.EmailAuthService;
 import demo.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.concurrency.SingletonMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,16 +23,26 @@ import java.util.Collections;
 public class EmailAuthController {
 
     private final MemberService memberService;
+    private final EmailAuthService emailAuthService;
 
     /**
      * @param emailAuthRequest　このコントローラーメソッドが呼ばれた時点ではemailの値しか入ってない
      */
     @PostMapping("/emailAuthRequest")
-    public ResponseEntity<?> emailAuthRequest(@RequestBody EmailAuthRequest emailAuthRequest) {
+    public ResponseEntity<Object> emailAuthRequest(@RequestBody EmailAuthRequest emailAuthRequest) {
         log.info("EmailAuthRequest={}", emailAuthRequest);
         if (memberService.duplicateCheckPub("email", emailAuthRequest.getEmail())) { // 重複==true
-
+            return ResponseEntity.status(HttpServletResponse.SC_CONFLICT)
+                    .body(Collections.singletonMap("errorEmailMessage", "メールアドレスが重複しています"));
         }
+
+        // メールアドレスが重複してない場合はメール送信ロージック
+        try {
+            emailAuthService.sendEmailAuthCode(emailAuthRequest);
+        } catch (MailSendException mailSendException) {
+            return ResponseEntity.status(421).body(mailSendException.getErrorMessage());
+        }
+
 
         return ResponseEntity.ok().build();
     }

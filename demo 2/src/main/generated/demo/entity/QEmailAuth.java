@@ -21,11 +21,15 @@ public class QEmailAuth extends EntityPathBase<EmailAuth> {
 
     public final StringPath certificationNumber = createString("certificationNumber");
 
+    public final StringPath email = createString("email");
+
     public final DateTimePath<java.time.LocalDateTime> expireDate = createDateTime("expireDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
+
+    public final EnumPath<demo.enums.StatusType> statusType = createEnum("statusType", demo.enums.StatusType.class);
 
     public QEmailAuth(String variable) {
         super(EmailAuth.class, forVariable(variable));
