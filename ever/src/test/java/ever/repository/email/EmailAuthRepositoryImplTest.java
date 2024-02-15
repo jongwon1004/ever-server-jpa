@@ -1,13 +1,12 @@
 package ever.repository.email;
 
-import ever.enums.StatusType;
+import ever.entity.EmailAuth;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -19,8 +18,8 @@ class EmailAuthRepositoryImplTest {
 
     @Test
     public void isEmailAuthenticated() {
-        StatusType status = emailAuthRepository.isEmailAuthenticated("whddnjs3340@naver.com");
-        System.out.println("status = " + status);
+        EmailAuth emailAuthenticated = emailAuthRepository.isEmailAuthenticated("whddnjs3340@naver.com");
+        System.out.println("emailAuthenticated.getStatusType() = " + emailAuthenticated.getStatusType());
     }
 
 
