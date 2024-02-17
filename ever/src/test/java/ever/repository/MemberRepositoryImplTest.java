@@ -20,4 +20,10 @@ class MemberRepositoryImplTest {
         System.out.println("memberStatusDto = " + memberStatusDto);
     }
 
+    @Test
+    public void userStatusToDtoTest() {
+        MemberStatusDto memberStatusDto = memberRepository.userStatus(4L);
+        System.out.println("memberStatusDto = " + memberStatusDto);
+    }
+
 }

@@ -9,19 +9,19 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.UUID;
 
+import static ever.constants.LoginUserConst.LOGIN_USER_NO;
+
 @Component
 public class SessionManager {
 
-    public void createSession(String userId) {
+    public void createSession(Long userId) {
         HttpSession session = getCurrentSession();
-        String uuid = UUID.randomUUID().toString();
-        System.out.println("uuid = " + uuid);
-        session.setAttribute(LoginUserConst.LOGIN_USER_NO, userId);
+        session.setAttribute(LOGIN_USER_NO, userId);
     }
 
-    public String getSession(Long userId) {
+    public Long getSessionUserId() {
         HttpSession session = getCurrentSession();
-        return (String) session.getAttribute(String.valueOf(userId));
+        return (Long) session.getAttribute(LOGIN_USER_NO);
     }
 
     private HttpSession getCurrentSession() {

@@ -1,6 +1,8 @@
 package ever.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ever.constants.LoginUserConst;
+import ever.dto.MemberStatusDto;
 import ever.repository.member.MemberRepository;
 import ever.session.SessionManager;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -23,9 +27,14 @@ public class StatusController {
     @GetMapping("/status")
     public ResponseEntity<?> status(@SessionAttribute(name = LoginUserConst.LOGIN_USER_NO, required = false) Long userId) {
         System.out.println("userId = " + userId);
-        if (sessionManager.getSession(userId) == null) {
+        if (sessionManager.getSessionUserId() == null) {
             return ResponseEntity.ok(Collections.singletonMap("result","No session found for user"));
         }
-        return ResponseEntity.ok(memberRepository.userStatus(userId));
+        MemberStatusDto memberStatusDto = memberRepository.userStatus(userId);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> map = objectMapper.convertValue(memberStatusDto, Map.class);
+
+        return ResponseEntity.ok(map);
     }
 }

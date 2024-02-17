@@ -5,14 +5,15 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ever.dto.MemberStatusDto;
 import ever.entity.Member;
-import ever.repository.member.MemberRepositoryCustom;
 import ever.request.LoginRequest;
 import ever.entity.QMember;
 import jakarta.persistence.EntityManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
@@ -52,18 +53,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public String findIdByLoginId(String loginId) {
+    public Long findIdByLoginId(String loginId) {
 
-        return String.valueOf(
-                queryFactory
-                        .selectFrom(QMember.member)
-                        .where(QMember.member.loginId.eq(loginId))
-                        .fetchOne()
-                        .getId());
+        return queryFactory
+                .selectFrom(QMember.member)
+                .where(QMember.member.loginId.eq(loginId))
+                .fetchOne()
+                .getId();
     }
 
     @Override
     public MemberStatusDto userStatus(Long userId) {
+        System.out.println("여기들어옴 ?");
         return
                 queryFactory
                         .select(
@@ -110,6 +111,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(predicate) // 해당 필드의 값이 존재 ?
                 .fetchFirst() != null;  // 존재하지 않으면 false
     }
+
+
 
 
 

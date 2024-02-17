@@ -12,7 +12,7 @@ public interface MemberRepositoryCustom {
 
     Member loginRequestCheck(LoginRequest loginRequest);
 
-    String findIdByLoginId(String loginId);
+    Long findIdByLoginId(String loginId);
 
     MemberStatusDto userStatus(Long userId);
 
