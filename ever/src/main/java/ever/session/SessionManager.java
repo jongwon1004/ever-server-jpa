@@ -1,5 +1,6 @@
 package ever.session;
 
+import ever.constants.LoginUserConst;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -15,7 +16,7 @@ public class SessionManager {
         HttpSession session = getCurrentSession();
         String uuid = UUID.randomUUID().toString();
         System.out.println("uuid = " + uuid);
-        session.setAttribute(userId, uuid);
+        session.setAttribute(LoginUserConst.LOGIN_USER_NO, userId);
     }
 
     public String getSession(Long userId) {

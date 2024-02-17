@@ -20,8 +20,9 @@ public class LoginController {
     private final SessionManager sessionManager;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@ModelAttribute LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
 
+        System.out.println("loginRequest = " + loginRequest);
         Member member = memberRepository.loginRequestCheck(loginRequest);
         if (member == null) {
             return ResponseEntity.badRequest().body(new LoginResponse("loginFailed", false));
@@ -29,6 +30,5 @@ public class LoginController {
             sessionManager.createSession(memberRepository.findIdByLoginId(loginRequest.getUserId()));
             return ResponseEntity.ok(new LoginResponse("loginSuccess", true));
         }
-
     }
 }

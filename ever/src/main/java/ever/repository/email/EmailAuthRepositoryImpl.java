@@ -46,4 +46,5 @@ public class EmailAuthRepositoryImpl implements EmailAuthRepositoryCustom {
                 .where(emailAuth.email.eq(email))
                 .execute();
     }
+
 }

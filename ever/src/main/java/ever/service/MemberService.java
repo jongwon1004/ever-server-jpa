@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -39,6 +40,7 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }
 
+    @Transactional
     public Long save(SignupRequest signupRequest) {
 
         UserClass userClass = userClassRepository.findUserClassByClassName(signupRequest.getClassName())
@@ -59,7 +61,7 @@ public class MemberService implements UserDetailsService {
         /**
          * ここにEmailAuthの情報DBから完全に削除するロージック
          */
-
+        emailAuthRepository.deleteEmailAuthByEmail(signupRequest.getEmail());
         return member.getId();
     }
 

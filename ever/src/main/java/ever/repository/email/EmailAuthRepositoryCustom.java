@@ -9,4 +9,5 @@ public interface EmailAuthRepositoryCustom {
     EmailAuth isEmailAuthenticated(String email);
 
     void updateEmailAuthStatus(String email);
+
 }
