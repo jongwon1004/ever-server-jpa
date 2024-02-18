@@ -5,6 +5,8 @@ import ever.constants.LoginUserConst;
 import ever.dto.MemberStatusDto;
 import ever.repository.member.MemberRepository;
 import ever.session.SessionManager;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +26,31 @@ public class StatusController {
     private final SessionManager sessionManager;
     private final MemberRepository memberRepository;
 
+    @Getter
+    @AllArgsConstructor
+    static class StatusResult<T, U, V> {
+        private T loginUserInfoMap;
+        private U notificationMap;
+        private V bookmarkMap;
+    }
+
     @GetMapping("/status")
-    public ResponseEntity<?> status(@SessionAttribute(name = LoginUserConst.LOGIN_USER_NO, required = false) Long userId) {
+    public ResponseEntity<StatusResult<Map, Map, Map>> status(@SessionAttribute(name = LoginUserConst.LOGIN_USER_NO, required = false) Long userId) {
         System.out.println("userId = " + userId);
         if (sessionManager.getSessionUserId() == null) {
-            return ResponseEntity.ok(Collections.singletonMap("result","No session found for user"));
+            return ResponseEntity.ok(new StatusResult<>(
+                    Collections.singletonMap("result", "No session found for user"),
+                    Collections.emptyMap(),
+                    Collections.emptyMap()));
         }
+
         MemberStatusDto memberStatusDto = memberRepository.userStatus(userId);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.convertValue(memberStatusDto, Map.class);
+        Map<String, Object> loginUserInfoMap = objectMapper.convertValue(memberStatusDto, HashMap.class);
+        Map<String, Object> notificationMap = Collections.emptyMap();
+        Map<String, Object> bookmarkMap = Collections.emptyMap();
 
-        return ResponseEntity.ok(map);
+        return ResponseEntity.ok(new StatusResult<>(loginUserInfoMap, notificationMap, bookmarkMap));
     }
 }
