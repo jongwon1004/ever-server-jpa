@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface MemberRepositoryCustom {
 
-    List<Member> findByNameStartingWith(String startName);
-
     Member loginRequestCheck(LoginRequest loginRequest);
 
     Long findIdByLoginId(String loginId);

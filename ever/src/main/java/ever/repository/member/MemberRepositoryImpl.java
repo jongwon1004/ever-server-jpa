@@ -25,13 +25,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
 
-    @Override
-    public List<Member> findByNameStartingWith(String startName) {
-        return queryFactory
-                .selectFrom(QMember.member)
-                .where(QMember.member.name.startsWith(startName))
-                .fetch();
-    }
 
     @Override
     public Member loginRequestCheck(LoginRequest loginRequest) {
@@ -64,7 +57,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public MemberStatusDto userStatus(Long userId) {
-        System.out.println("여기들어옴 ?");
         return
                 queryFactory
                         .select(
