@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import static ever.entity.QBoard.*;
 import static ever.entity.QMember.*;
@@ -63,6 +64,8 @@ class BoardTest {
         System.out.println("findMember.orElseThrow(() -> new IllegalStateException(\"Not Member\"))\n                .getName() = " + findMember.orElseThrow(() -> new IllegalStateException("Not Member"))
                 .getName());
     }
+    
+
 
 
 

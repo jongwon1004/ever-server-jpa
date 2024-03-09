@@ -1,5 +1,6 @@
 package ever.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ever.constants.LoginUserConst;
 import ever.dto.MemberStatusDto;
@@ -29,9 +30,11 @@ public class StatusController {
     @Getter
     @AllArgsConstructor
     static class StatusResult<T, U, V> {
-        private T loginUserInfoMap;
-        private U notificationMap;
-        private V bookmarkMap;
+        @JsonProperty("isLoggedIn")
+        private boolean isLoggedIn;
+        private T userInfo;
+        private U notificationInfo;
+        private V bookmarkInfo;
     }
 
     @GetMapping("/status")
@@ -39,6 +42,7 @@ public class StatusController {
         System.out.println("userId = " + userId);
         if (sessionManager.getSessionUserId() == null) {
             return ResponseEntity.ok(new StatusResult<>(
+                    false,
                     Collections.singletonMap("result", "No session found for user"),
                     Collections.emptyMap(),
                     Collections.emptyMap()));
@@ -51,6 +55,6 @@ public class StatusController {
         Map<String, Object> notificationMap = Collections.emptyMap();
         Map<String, Object> bookmarkMap = Collections.emptyMap();
 
-        return ResponseEntity.ok(new StatusResult<>(loginUserInfoMap, notificationMap, bookmarkMap));
+        return ResponseEntity.ok(new StatusResult<>(true, loginUserInfoMap, notificationMap, bookmarkMap));
     }
 }
