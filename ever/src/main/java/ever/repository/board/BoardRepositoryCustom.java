@@ -2,9 +2,11 @@ package ever.repository.board;
 
 import ever.dto.BoardListDto;
 import ever.dto.query.BoardListQueryDetails;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface BoardRepositoryCustom {
-    Page<BoardListDto> getBoardListAndCnt(BoardListQueryDetails queryDetails);
+    List<BoardListDto> getBoardList(BoardListQueryDetails queryDetails);
+
+    Long getBoardCnt(BoardListQueryDetails queryDetails);
 }

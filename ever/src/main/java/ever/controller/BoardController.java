@@ -1,6 +1,7 @@
 package ever.controller;
 
 import ever.dto.query.BoardListQueryDetails;
+import ever.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -16,19 +17,20 @@ import java.util.Map;
 @RequestMapping(value = "/api/category")
 public class BoardController {
 
+    private final BoardService boardService;
+
     @GetMapping(value = {"/{languageTypeName}", "/{languageTypeName}/{language}"})
     public ResponseEntity<Map<String, Object>> BoardList(@PathVariable("languageTypeName") String languageTypeName,
-                                                         @PathVariable("language") String language,
+                                                         @PathVariable(value = "language", required = false) String language,
                                                          @RequestParam Integer page,
-                                                         @RequestParam(value = "search") String search) {
+                                                         @RequestParam(value = "search", required = false) String search) {
 
         Integer offset = (page - 1) * 9;
 
-        BoardListQueryDetails queryDetails = new BoardListQueryDetails(languageTypeName, language, page, search, offset);
+        Map<String, Object> result = boardService.getBoardList(languageTypeName, language, page, search);
 
 
-
-        return ResponseEntity.ok(Collections.singletonMap("hello", "hello"));
+        return ResponseEntity.ok(result);
     }
 
 }
