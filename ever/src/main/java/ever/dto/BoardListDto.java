@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class BoardListDto {
+
+
     private Long globalBoardNo;
     private Long languageNo;
     private Long writerNo;
@@ -23,6 +24,20 @@ public class BoardListDto {
     private LocalDateTime updateDate;
     private String languageName;
     private String writerName;
+
+    public BoardListDto(Long globalBoardNo, Long languageNo, Long writerNo, String title, String content, int viewCnt, int commentCnt, LocalDateTime regDate, LocalDateTime updateDate, String languageName, String writerName) {
+        this.globalBoardNo = globalBoardNo;
+        this.languageNo = languageNo;
+        this.writerNo = writerNo;
+        this.title = title;
+        this.content = content;
+        this.viewCnt = viewCnt;
+        this.commentCnt = commentCnt;
+        this.regDate = regDate;
+        this.updateDate = updateDate;
+        this.languageName = languageName;
+        this.writerName = writerName;
+    }
 }
 
 /*

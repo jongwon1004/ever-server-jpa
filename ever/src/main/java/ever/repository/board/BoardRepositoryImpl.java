@@ -1,21 +1,17 @@
 package ever.repository.board;
 
-import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ever.dto.BoardListDto;
 import ever.dto.query.BoardListQueryDetails;
-import ever.entity.QBoard;
-import ever.entity.QLanguage;
-import ever.entity.QLanguageType;
-import ever.entity.QMember;
 import ever.enums.StatusType;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ever.entity.QBoard.*;
 import static ever.entity.QComment.comment;
@@ -31,36 +27,56 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<BoardListDto> getBoardListAndCnt(BoardListQueryDetails queryDetails, Pageable pageable) {
+    public Page<BoardListDto> getBoardListAndCnt(BoardListQueryDetails queryDetails) {
 
-        JPQLQuery<Long> commentCountSubQuery = JPAExpressions
-                .select(comment.count())
-                .from(comment)
-                .where(comment.board.id.eq(board.id));
+        BooleanExpression condition = languageType.languageTypeName.eq(queryDetails.getLanguageTypeName());
 
-        queryFactory.select(
-                        Projections.fields(BoardListDto.class,
-                                board.id.as("globalBoardNo"),
-                                language.id.as("languageNo"),
-                                member.id.as("writerNo"),
-                                board.title,
-                                board.content,
-                                board.viewCount.as("viewCnt"),
-                                board.commentCount.as("commentCnt"),
-                                board.regDate,
-                                board.updateDate,
-                                board.language.languageName,
-                                member.nickname.as("writerName")
+        if (queryDetails.getLanguageName() != null) {
+            condition.and(language.languageName.eq(queryDetails.getLanguageName()));
+        }
 
-                        )
-                ).from(board)
+        List<Tuple> results = queryFactory
+                .select(board.id,
+                        language.id,
+                        member.id,
+                        board.title,
+                        board.content,
+                        board.viewCount,
+                        JPAExpressions
+                                .select(comment.count().as("commentCnt"))
+                                .from(comment)
+                                .where(comment.board.id.eq(board.id)),
+                        board.regDate,
+                        board.updateDate,
+                        board.language.languageName,
+                        member.nickname)
+                .from(board)
                 .join(board.language, language)
                 .join(language.languageType, languageType)
                 .join(board.member, member)
-                .where(board.status.eq(StatusType.ACTIVE),
-                        languageType.languageTypeName.eq(queryDetails.getLanguageTypeName()));
+                .where(condition)
+                .fetch();
 
+        List<BoardListDto> dtos = results
+                .stream()
+                .map(tuple -> {
+                    return new BoardListDto(
+                            tuple.get(board.id),
+                            tuple.get(language.id),
+                            tuple.get(member.id),
+                            tuple.get(board.title),
+                            tuple.get(board.content),
+                            tuple.get(board.viewCount),
+                            tuple.get(6, Long.class).intValue(), // commentCount 서브쿼리 결과를 int 로 변환
+                            tuple.get(board.regDate),
+                            tuple.get(board.updateDate),
+                            tuple.get(board.language.languageName),
+                            tuple.get(member.nickname)
+                    );
+                }).collect(Collectors.toList());
 
+        System.out.println(dtos);
+        return null;
 
     }
 }
